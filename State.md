@@ -1,0 +1,1 @@
+2026-04-18: SSH новый `~/.ssh/id_ed25519_chegeka`, config `Host github.com` IdentitiesOnly. Удалены `deploy_my_vibe*`, `id_ed25519_github*`. Git init, remote `git@github.com:nawas5/chegeka-site.git`. Ключ `chegeka-site` добавлен в GitHub; `ssh -T git@github.com` — OK. Дальше: при необходимости `git branch -M main`, первый `git push -u origin main` (или master).

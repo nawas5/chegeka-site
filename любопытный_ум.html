@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Любопытный Ум — откройте мир заново</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:       #1c1a14;
+  --ink-2:     #3a3628;
+  --ink-3:     #6b6450;
+  --gold:      #b8922a;
+  --gold-l:    #d4a843;
+  --gold-pale: #f5e9cc;
+  --paper:     #faf6ee;
+  --paper-2:   #f2ebdc;
+  --paper-3:   #e8dfc8;
+  --cream:     #fffdf7;
+  --teal:      #2d6b6b;
+  --teal-l:    #4a9090;
+  --teal-pale: #d4eaea;
+  --rose:      #8b3a3a;
+  --rose-pale: #f0dada;
+  --border:    rgba(28,26,20,0.12);
+  --shadow:    rgba(28,26,20,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lora', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ─── Paper grain texture ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.6;
+}
+
+/* ─── Decorative top border ─── */
+body::after {
+  content: '';
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100;
+  background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold-l) 50%, var(--gold) 80%, transparent);
+}
+
+.page-wrap {
+  position: relative; z-index: 1;
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ─── Header ─── */
+header {
+  text-align: center;
+  padding: 52px 0 32px;
+  position: relative;
+}
+
+.header-ornament {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-family: 'Lora', serif;
+  margin-bottom: 14px;
+}
+
+.site-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.site-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.site-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--ink-3);
+  margin-top: 10px;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 20px;
+  padding: 5px 14px;
+  background: var(--paper-2);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: 'Lora', serif;
+}
+
+.date-badge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* ─── Divider ─── */
+.ornamental-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 28px 0;
+}
+.ornamental-divider::before,
+.ornamental-divider::after {
+  content: ''; flex: 1; height: 0.5px;
+  background: linear-gradient(90deg, transparent, var(--border));
+}
+.ornamental-divider::after {
+  background: linear-gradient(270deg, transparent, var(--border));
+}
+.ornamental-divider span {
+  font-size: 13px; color: var(--gold); letter-spacing: 0.15em;
+}
+
+/* ─── Category tabs ─── */
+.categories {
+  display: flex; flex-wrap: wrap; gap: 7px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.cat-pill {
+  padding: 7px 16px;
+  border: 0.5px solid var(--border);
+  border-radius: 24px;
+  font-family: 'Lora', serif;
+  font-size: 13px;
+  color: var(--ink-3);
+  background: var(--cream);
+  cursor: pointer;
+  transition: all .25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.cat-pill::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--gold-pale);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .25s ease;
+  z-index: 0;
+}
+.cat-pill span { position: relative; z-index: 1; }
+.cat-pill:hover { color: var(--ink-2); border-color: var(--gold); }
+.cat-pill:hover::before { transform: scaleX(1); }
+.cat-pill.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+  font-weight: 500;
+}
+.cat-pill.active::before { display: none; }
+
+/* ─── Main question card ─── */
+.q-card {
+  background: var(--cream);
+  border: 0.5px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 24px var(--shadow), 0 1px 3px var(--shadow);
+  position: relative;
+  animation: cardIn .5s cubic-bezier(.16,1,.3,1);
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Left gold accent bar */
+.q-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--gold-l), var(--gold));
+}
+
+.q-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px 14px 28px;
+  border-bottom: 0.5px solid var(--border);
+  background: var(--paper-2);
+}
+
+.q-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold);
+  font-family: 'Lora', serif;
+}
+.q-label::before {
+  content: ''; width: 16px; height: 0.5px;
+  background: var(--gold);
+}
+
+.q-meta {
+  display: flex; align-items: center; gap: 8px;
+}
+.q-tag {
+  font-size: 11px; padding: 3px 10px;
+  border-radius: 3px;
+  background: var(--paper-3);
+  color: var(--ink-3);
+  font-family: 'Lora', serif;
+  letter-spacing: 0.04em;
+}
+.q-diff {
+  font-size: 11px; color: var(--ink-3);
+  font-family: 'Lora', serif;
+}
+
+.question-body {
+  padding: 28px 28px 24px 32px;
+  min-height: 130px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+
+.question-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(18px, 3vw, 24px);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink);
+  transition: opacity .3s;
+}
+.question-text.is-loading {
+  color: var(--ink-3);
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+@keyframes shimmer { 0%,100%{opacity:.4} 50%{opacity:.9} }
+
+/* ─── Hint area ─── */
+.hints-area {
+  padding: 0 28px 20px 32px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.hint-btn-wrap {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.hint-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 18px;
+  border: 0.5px solid var(--border);
+  border-radius: 3px;
+  background: var(--paper-2);
+  font-family: 'Lora', serif;
+  font-size: 13px;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.hint-btn:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: var(--gold-pale);
+  color: var(--ink);
+}
+.hint-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.hint-btn .h-icon {
+  font-size: 14px;
+  width: 20px; text-align: center;
+}
+.hint-btn .h-cost {
+  font-size: 10px; color: var(--gold);
+  font-style: italic;
+}
+
+.hint-card {
+  display: none;
+  background: var(--gold-pale);
+  border: 0.5px solid rgba(184,146,42,0.3);
+  border-radius: 3px;
+  padding: 12px 16px;
+  animation: hintIn .35s cubic-bezier(.16,1,.3,1);
+  flex: 1;
+}
+@keyframes hintIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.hint-card.visible { display: block; }
+.hint-card-label {
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--gold);
+  font-family: 'Lora', serif;
+  margin-bottom: 5px;
+}
+.hint-card-text {
+  font-size: 13px; color: var(--ink-2);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; font-weight: 400;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* ─── Action area ─── */
+.action-bar {
+  padding: 16px 28px 20px 32px;
+  border-top: 0.5px solid var(--border);
+  background: var(--paper-2);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+
+.reveal-btn {
+  flex: 1;
+  padding: 13px 24px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none; border-radius: 3px;
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.reveal-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--gold);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s ease;
+}
+.reveal-btn span { position: relative; z-index: 1; }
+.reveal-btn:hover:not(:disabled)::before { transform: scaleX(1); }
+.reveal-btn:hover:not(:disabled) { color: #fff; }
+.reveal-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.skip-btn {
+  padding: 13px 18px;
+  background: transparent;
+  border: 0.5px solid var(--border);
+  border-radius: 3px;
+  font-family: 'Lora', serif;
+  font-size: 12px;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.skip-btn:hover { border-color: var(--ink-3); color: var(--ink-2); }
+
+/* ─── Answer section ─── */
+.answer-section {
+  max-height: 0; overflow: hidden;
+  transition: max-height .7s cubic-bezier(.16,1,.3,1);
+}
+.answer-section.open { max-height: 1200px; }
+
+.answer-inner {
+  border-top: 0.5px solid var(--border);
+  background: var(--cream);
+}
+
+.answer-top {
+  padding: 26px 28px 22px 32px;
+  background: var(--ink);
+  position: relative; overflow: hidden;
+}
+.answer-top::before {
+  content: '';
+  position: absolute; right: -20px; top: -20px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: rgba(184,146,42,0.12);
+}
+.answer-top::after {
+  content: '';
+  position: absolute; right: 30px; bottom: -30px;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(184,146,42,0.07);
+}
+
+.answer-label-text {
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(184,146,42,0.7);
+  font-family: 'Lora', serif;
+  margin-bottom: 10px;
+}
+
+.answer-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700; font-style: italic;
+  color: var(--gold-l);
+  line-height: 1.35;
+  position: relative; z-index: 1;
+  animation: answerReveal .5s cubic-bezier(.16,1,.3,1);
+}
+@keyframes answerReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.answer-text.is-loading { color: rgba(184,146,42,0.3); animation: shimmer 1.8s infinite; }
+
+.context-zone {
+  padding: 24px 28px 20px 32px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.context-label {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-family: 'Lora', serif;
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.context-label::after {
+  content: ''; flex: 1; height: 0.5px;
+  background: var(--border);
+}
+
+.context-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight: 400;
+  color: var(--ink-2);
+  line-height: 1.75;
+}
+.context-text.is-loading { animation: shimmer 1.8s infinite; color: var(--ink-3); }
+
+/* ─── Rabbit hole ─── */
+.rabbit-zone {
+  margin: 16px 28px 0 32px;
+  padding: 14px 18px;
+  background: var(--teal-pale);
+  border: 0.5px solid rgba(45,107,107,0.2);
+  border-radius: 3px;
+  border-left: 2px solid var(--teal);
+  display: none;
+  animation: hintIn .4s cubic-bezier(.16,1,.3,1);
+}
+.rabbit-zone.visible { display: block; }
+.rabbit-zone-label {
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-family: 'Lora', serif;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.rabbit-zone-label::before { content: '↳'; font-style: normal; }
+.rabbit-zone-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; color: var(--teal);
+  line-height: 1.6; font-style: italic;
+}
+
+/* ─── Next button area ─── */
+.next-zone {
+  padding: 20px 28px 24px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+
+.next-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 22px;
+  background: transparent;
+  border: 0.5px solid var(--ink);
+  border-radius: 3px;
+  font-family: 'Lora', serif;
+  font-size: 14px; color: var(--ink);
+  cursor: pointer;
+  transition: all .25s;
+}
+.next-btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.next-btn .arrow { transition: transform .2s; }
+.next-btn:hover .arrow { transform: translateX(3px); }
+
+.session-info {
+  font-size: 12px; color: var(--ink-3);
+  font-family: 'Lora', serif; font-style: italic;
+}
+
+/* ─── Stats strip ─── */
+.stats-strip {
+  display: flex; justify-content: center; gap: 32px;
+  margin-top: 28px;
+  padding: 16px;
+  border-top: 0.5px solid var(--border);
+}
+.stat-item {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700; color: var(--ink);
+}
+.stat-lbl {
+  font-size: 11px; color: var(--ink-3);
+  letter-spacing: 0.08em;
+  font-family: 'Lora', serif;
+}
+
+/* ─── Loading spinner ─── */
+.loading-overlay {
+  display: none;
+  position: absolute; inset: 0;
+  background: rgba(250,246,238,0.8);
+  backdrop-filter: blur(2px);
+  z-index: 10;
+  align-items: center; justify-content: center;
+  border-radius: 4px;
+}
+.loading-overlay.active { display: flex; }
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Error ─── */
+.error-card {
+  display: none;
+  padding: 20px 28px;
+  background: var(--rose-pale);
+  border: 0.5px solid rgba(139,58,58,0.2);
+  border-radius: 3px;
+  margin-top: 16px;
+  font-family: 'Lora', serif;
+  font-size: 14px; color: var(--rose);
+  text-align: center;
+}
+.error-card.visible { display: block; }
+
+/* ─── Footer ─── */
+footer {
+  text-align: center;
+  padding: 32px 0 20px;
+  font-size: 12px; color: var(--ink-3);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 520px) {
+  .page-wrap { padding: 0 14px 60px; }
+  .question-body, .hints-area, .action-bar,
+  .context-zone, .next-zone, .rabbit-zone { padding-left: 20px; padding-right: 16px; }
+  .q-header { padding-left: 20px; }
+  .answer-top { padding-left: 20px; }
+  .action-bar { flex-wrap: wrap; }
+  .hint-btn-wrap { flex-direction: column; align-items: stretch; }
+  .hint-card { flex: auto; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <header>
+    <div class="header-ornament">Знание · Красота · Любопытство</div>
+    <h1 class="site-title">Любопытный <em>Ум</em></h1>
+    <p class="site-sub">Одно открытие в день — и мир становится немного богаче</p>
+    <div class="date-badge" id="dateBadge">Сегодня</div>
+  </header>
+
+  <div class="ornamental-divider"><span>✦ ✦ ✦</span></div>
+
+  <div class="categories" id="categories">
+    <button class="cat-pill active" data-cat="random" onclick="selectCat(this)"><span>✦ Удивите меня</span></button>
+    <button class="cat-pill" data-cat="history" onclick="selectCat(this)"><span>История</span></button>
+    <button class="cat-pill" data-cat="math" onclick="selectCat(this)"><span>Математика</span></button>
+    <button class="cat-pill" data-cat="earth" onclick="selectCat(this)"><span>Планета Земля</span></button>
+    <button class="cat-pill" data-cat="science" onclick="selectCat(this)"><span>Наука</span></button>
+    <button class="cat-pill" data-cat="universe" onclick="selectCat(this)"><span>Вселенная</span></button>
+    <button class="cat-pill" data-cat="art" onclick="selectCat(this)"><span>Искусство</span></button>
+  </div>
+
+  <!-- Main question card -->
+  <div class="q-card" id="qCard">
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="spinner"></div>
+    </div>
+
+    <div class="q-header">
+      <div class="q-label">Вопрос дня</div>
+      <div class="q-meta">
+        <span class="q-tag" id="qCategory">—</span>
+        <span class="q-diff" id="qDiff"></span>
+      </div>
+    </div>
+
+    <div class="question-body">
+      <div class="question-text is-loading" id="questionText">
+        Открываем страницы истории…
+      </div>
+    </div>
+
+    <!-- Hints -->
+    <div class="hints-area">
+      <!-- Hint 1 -->
+      <div class="hint-btn-wrap">
+        <button class="hint-btn" id="hint1Btn" onclick="revealHint(1)" disabled>
+          <span class="h-icon">🕰</span>
+          <span>Подсказка: Время и эпоха</span>
+          <span class="h-cost">1/2</span>
+        </button>
+        <div class="hint-card" id="hint1Card">
+          <div class="hint-card-label">Время и эпоха</div>
+          <div class="hint-card-text" id="hint1Text"></div>
+        </div>
+      </div>
+      <!-- Hint 2 -->
+      <div class="hint-btn-wrap">
+        <button class="hint-btn" id="hint2Btn" onclick="revealHint(2)" disabled>
+          <span class="h-icon">👥</span>
+          <span>Подсказка: Люди и место</span>
+          <span class="h-cost">2/2</span>
+        </button>
+        <div class="hint-card" id="hint2Card">
+          <div class="hint-card-label">Люди и место</div>
+          <div class="hint-card-text" id="hint2Text"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="reveal-btn" id="revealBtn" onclick="revealAnswer()" disabled>
+        <span>Раскрыть ответ</span>
+      </button>
+      <button class="skip-btn" onclick="loadQuestion()">Другой вопрос</button>
+    </div>
+
+    <!-- Answer section (hidden until reveal) -->
+    <div class="answer-section" id="answerSection">
+      <div class="answer-inner">
+        <div class="answer-top">
+          <div class="answer-label-text">Ответ</div>
+          <div class="answer-text is-loading" id="answerText">…</div>
+        </div>
+
+        <div class="context-zone">
+          <div class="context-label">Узнай больше</div>
+          <div class="context-text is-loading" id="contextText">…</div>
+          <div class="rabbit-zone" id="rabbitZone">
+            <div class="rabbit-zone-label">Кроличья нора — куда идти дальше</div>
+            <div class="rabbit-zone-text" id="rabbitText"></div>
+          </div>
+        </div>
+
+        <div class="next-zone">
+          <button class="next-btn" onclick="loadQuestion()">
+            Следующий вопрос <span class="arrow">→</span>
+          </button>
+          <span class="session-info" id="sessionInfo"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="error-card" id="errorCard">
+    Не удалось загрузить вопрос. Проверьте подключение и попробуйте снова.
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-num" id="statQuestions">0</div>
+      <div class="stat-lbl">Вопросов</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="statHints">0</div>
+      <div class="stat-lbl">Подсказок</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="statAnswers">0</div>
+      <div class="stat-lbl">Ответов открыто</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Каждый вопрос — это дверь. За ней — целый мир.
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════
+// ЛОКАЛЬНАЯ БАЗА — вопросы показываются мгновенно
+// AI досыпает новые в фоне пока пользователь читает
+// ══════════════════════════════════════════════════
+
+const LOCAL_BANK = [
+  {
+    question: "Этот человек создал инструмент, которым пользуются миллиарды людей каждый день, но сам принципиально отказывался им пользоваться и называл своё изобретение «мусором для мозга». Что он изобрёл?",
+    hint1: "Изобретение появилось в середине XX века и произвело революцию в домашнем досуге и массовой культуре.",
+    hint2: "Его создатель — американский инженер Фило Фарнсворт — впоследствии запрещал своим детям смотреть на это устройство.",
+    answer: "Телевизор",
+    context: "Фило Фарнсворт запатентовал полностью электронное телевидение в 1927 году, будучи всего 21 лет от роду. Несмотря на то что его изобретение принесло ему мировую славу, он считал, что телевидение несёт людям больше вреда, чем пользы. Его сын вспоминал, что отец разрешал смотреть телевизор лишь однажды — когда транслировалась высадка на Луну.",
+    rabbit_hole: "Прочитайте книгу «Мальчик, поймавший молнию» об истории изобретения телевидения и патентной войне Фарнсворта с RCA.",
+    category: "История", difficulty: "Средний"
+  },
+  {
+    question: "В 1962 году эта страна случайно потеряла ядерную бомбу в Атлантическом океане — и так и не нашла её до сих пор. Что произошло?",
+    hint1: "Холодная война, начало 1960-х — время, когда ядерное оружие перевозили самолётами по всему миру.",
+    hint2: "Авиабаза Сеймур Джонсон, штат Северная Каролина. Два бомбардировщика столкнулись в воздухе при дозаправке.",
+    answer: "США потеряли бомбу Mk 15 у берегов Северной Каролины",
+    context: "В январе 1961 года бомбардировщик B-52 разрушился в воздухе над Голдсборо. Из двух термоядерных бомб одну нашли, вторая ушла в болото. Военные раскопали грунт на 18 метров, но так и не достали — грунтовые воды мешали. Боеголовка мощностью 3,8 мегатонны (250 Хиросим) до сих пор лежит где-то в болотах Северной Каролины.",
+    rabbit_hole: "Ищите по теме «Голдсборо 1961» и «сломанные стрелы» (Broken Arrow) — так в США называют ядерные инциденты.",
+    category: "История", difficulty: "Сложный"
+  },
+  {
+    question: "Это математическое понятие было открыто независимо в Индии, Вавилоне и Центральной Америке — но цивилизации не знали друг о друге. Что это за понятие, без которого невозможна современная математика?",
+    hint1: "Речь об идее, которая кажется очевидной сейчас, но потребовала тысячелетий, чтобы люди её придумали.",
+    hint2: "Без этого понятия нельзя записать число 10, 100 или 2024 — только числа вроде 1, 2, 3, 9.",
+    answer: "Ноль",
+    context: "Вавилоняне использовали пустое место для обозначения нуля ещё в III веке до н.э. В Индии Брахмагупта в 628 году впервые описал правила арифметики с нулём. Майя изобрели ноль независимо около IV века н.э. Европа получила ноль от арабов только в XII веке — и сначала Католическая церковь запрещала его использование как «дьявольское изобретение».",
+    rabbit_hole: "Книга Чарльза Сейфа «Ноль: биография опасной идеи» — захватывающая история самого спорного числа в математике.",
+    category: "Математика", difficulty: "Лёгкий"
+  },
+  {
+    question: "Этот парадокс заставил математиков в начале XX века переосмыслить основы всей математики. Представьте деревню, где цирюльник бреет всех, кто не бреет себя сам. Кто бреет цирюльника?",
+    hint1: "1901 год. Английский математик и философ формулирует это противоречие, работая над теорией множеств.",
+    hint2: "Если цирюльник бреет себя — он нарушает правило. Если не бреет — тоже нарушает. Выхода нет.",
+    answer: "Никто — это парадокс Рассела",
+    context: "Бертран Рассел сформулировал этот парадокс в 1901 году, и он буквально разрушил попытку математика Готлоба Фреге построить логический фундамент арифметики. Рассел отправил Фреге письмо с парадоксом, когда тот уже завершал второй том своего главного труда. Фреге ответил: «Вашим письмом моя работа разрушена почти до основания».",
+    rabbit_hole: "Гёдель, Эшер, Бах — книга Дугласа Хофштадтера исследует самореференцию и парадоксы в математике, музыке и искусстве.",
+    category: "Математика", difficulty: "Средний"
+  },
+  {
+    question: "Каждую секунду Солнце теряет 4 миллиона тонн своей массы. Куда она девается?",
+    hint1: "Это не испарение и не «выдувание» солнечным ветром — речь о фундаментальном физическом процессе.",
+    hint2: "Формула E=mc² и ядерный синтез в ядре Солнца — вот ключи к ответу.",
+    answer: "Превращается в энергию — свет и тепло",
+    context: "В ядре Солнца ежесекундно 600 миллионов тонн водорода превращается в 596 миллионов тонн гелия. Разница — 4 миллиона тонн — исчезает, превращаясь в колоссальное количество энергии по формуле Эйнштейна E=mc². За 4,6 миллиарда лет существования Солнце потеряло таким образом около 0,03% своей массы.",
+    rabbit_hole: "Книга Митио Каку «Физика будущего» объясняет, как термоядерный синтез может дать человечеству практически бесконечную энергию.",
+    category: "Вселенная", difficulty: "Средний"
+  },
+  {
+    question: "Эта звезда настолько велика, что если поставить её на место Солнца, она поглотила бы орбиту Юпитера. Но она умирает — и учёные ждут взрыва, который будет виден днём. Как называется эта звезда?",
+    hint1: "Это одна из самых ярких звёзд ночного неба, хорошо заметная зимой в созвездии.",
+    hint2: "Созвездие Ориона. Красноватая звезда в левом плече охотника.",
+    answer: "Бетельгейзе",
+    context: "Бетельгейзе — красный сверхгигант в 700 световых годах от нас. Её диаметр в 1000 раз больше солнечного. С 2019 года звезда резко потускнела — учёные назвали это «Великим затемнением» и предположили скорый взрыв сверхновой. Когда это произойдёт, Бетельгейзе несколько недель будет сиять как полная Луна даже днём. Но «скоро» по звёздным меркам — это до 100 000 лет.",
+    rabbit_hole: "Ищите подкасты и лекции астрофизика Нила Деграсса Тайсона о жизни и смерти звёзд.",
+    category: "Вселенная", difficulty: "Лёгкий"
+  },
+  {
+    question: "Это природное явление создаёт звук, который слышен за 160 километров, производит молнии и поднимает камни размером с автомобиль на высоту 20 километров. Что это?",
+    hint1: "Это происходит на Земле регулярно — примерно 50–60 раз в год в разных точках планеты.",
+    hint2: "Земля буквально «дышит» через эти отверстия в коре. Исландия, Индонезия, Камчатка.",
+    answer: "Извержение вулкана",
+    context: "Извержение Кракатау в 1883 году было слышно на расстоянии 4800 км — это самый громкий звук в задокументированной истории человечества. Взрыв создал ударную волну, которая семь раз обошла Землю. Извержение Тамборы в 1815 году было настолько мощным, что вызвало «год без лета» — неурожай и голод в Северной Америке и Европе.",
+    rabbit_hole: "Документальный фильм «Супервулканы» от National Geographic или книга Саймона Уинчестера «Кракатау».",
+    category: "Земля", difficulty: "Лёгкий"
+  },
+  {
+    question: "Глубина этого места на Земле такова, что если бросить туда гору Эверест, её вершина не достигнет поверхности воды. Что это за место?",
+    hint1: "Это находится в Тихом океане, и человек побывал там даже раньше, чем на Луне — в 1960 году.",
+    hint2: "Желоб Марианский, самая глубокая точка которого носит имя британского корабля XIX века.",
+    answer: "Бездна Челленджер в Марианской впадине",
+    context: "Глубина Бездны Челленджер — 10 994 метра. Эверест высотой 8 849 метров утонул бы с запасом. Давление на дне — 1086 атмосфер, как будто на вас стоит 50 реактивных самолётов. Тем не менее там живут организмы: бактерии, рыбы, рачки. В 2012 году режиссёр Джеймс Кэмерон в одиночку опустился туда на специальном батискафе.",
+    rabbit_hole: "Книга Сильвии Эрл «Море перемен» или документальный фильм «Вызов бездне» о погружении Кэмерона.",
+    category: "Земля", difficulty: "Лёгкий"
+  },
+  {
+    question: "Этот учёный предсказал существование элемента, которого ещё не существовало, описал его свойства с точностью до второго знака — и оказался прав. Кто это и что за элемент?",
+    hint1: "XIX век, Россия. Учёный составлял таблицу, упорядочивая все известные элементы по их свойствам.",
+    hint2: "В таблице оставались пустые клетки — и учёный решил, что это не ошибка, а предсказание.",
+    answer: "Менделеев предсказал галлий (экаалюминий)",
+    context: "В 1871 году Менделеев предсказал три неизвестных элемента и подробно описал их свойства. Галлий был открыт в 1875 году — его плотность Менделеев предсказал как 5,9 г/см³, реальная оказалась 5,91. Германий открыли в 1886-м, скандий — в 1879-м. Эти открытия превратили периодическую таблицу из удобной классификации в мощный инструмент предсказания.",
+    rabbit_hole: "Книга Сэма Кина «Исчезающая ложка» — захватывающие истории каждого элемента периодической таблицы.",
+    category: "Наука", difficulty: "Средний"
+  },
+  {
+    question: "Этот человек дважды выжил при ядерной бомбардировке — в Хиросиме и Нагасаки. Как такое возможно?",
+    hint1: "Август 1945 года. Япония. Два города с разницей в три дня.",
+    hint2: "Он был в командировке в Хиросиме, а домой вернулся — в Нагасаки.",
+    answer: "Цутому Ямагути — единственный официально признанный «двойной выживший»",
+    context: "Цутому Ямагути был в командировке в Хиросиме 6 августа 1945 года и выжил при взрыве. С ожогами он вернулся домой в Нагасаки — и 9 августа пережил второй взрыв. Он дожил до 93 лет и скончался в 2010 году. Японское правительство официально признало его «нидзю хибакуся» (двойным пострадавшим) лишь в 2009 году.",
+    rabbit_hole: "Книга Чарльза Пеллегрино «Последний поезд из Хиросимы» об уцелевших при бомбардировках.",
+    category: "История", difficulty: "Средний"
+  },
+  {
+    question: "Эта теорема утверждает, что в любой достаточно мощной математической системе всегда найдутся истинные утверждения, которые нельзя ни доказать, ни опровергнуть внутри этой системы. Как называется эта теорема?",
+    hint1: "1931 год. Молодой австрийский математик потряс научный мир, опубликовав доказательство, которое никто не ожидал.",
+    hint2: "Теорема доказывает ограниченность самой математики — что любая система содержит «слепые пятна».",
+    answer: "Теорема о неполноте Гёделя",
+    context: "Курт Гёдель доказал свою теорему в 25 лет. До него математики мечтали построить полную и непротиворечивую систему, описывающую всю математику — программа Гильберта. Гёдель в одной статье показал, что это невозможно в принципе. Философ Бертран Рассел признался, что эта теорема не давала ему спать по ночам.",
+    rabbit_hole: "Книга Дугласа Хофштадтера «Гёдель, Эшер, Бах: эта бесконечная гирлянда» — одна из самых захватывающих книг о математике и разуме.",
+    category: "Математика", difficulty: "Сложный"
+  },
+  {
+    question: "Эта страна официально прекратила войну только в 2013 году — через 42 года после её окончания, потому что один солдат не знал о капитуляции и продолжал воевать в джунглях. О какой стране идёт речь?",
+    hint1: "Война закончилась в 1975 году. Солдат продолжал партизанить на тропическом острове десятилетиями.",
+    hint2: "Хиро Онода — японский офицер разведки на острове Лубанг, Филиппины.",
+    answer: "Япония (солдат Хиро Онода)",
+    context: "Хиро Онода получил приказ воевать и никогда не сдаваться. Он воспринимал листовки о капитуляции как вражескую пропаганду. Его убедил сложить оружие в 1974 году лишь его бывший командир, которого специально разыскали и привезли на Филиппины. Онода вышел из джунглей в полной форме, с исправной винтовкой и выполнил последний воинский ритуал.",
+    rabbit_hole: "Мемуары Хиро Оноды «Не сдаваться: моя тридцатилетняя война» — невероятный рассказ от первого лица.",
+    category: "История", difficulty: "Средний"
+  },
+  {
+    question: "Число π содержит бесконечно много знаков после запятой — и никакой закономерности. Математики считают, что в нём «спрятаны» все возможные числовые последовательности — в том числе дата вашего рождения и текст этого вопроса в виде чисел. Можно ли это доказать?",
+    hint1: "Математики называют такие числа «нормальными» — в которых все цифры встречаются равномерно.",
+    hint2: "Несмотря на триллионы известных знаков числа π, доказать это свойство до сих пор не удалось никому.",
+    answer: "Нет — это гипотеза, не доказанная до сих пор",
+    context: "Если π является «нормальным числом», то в нём действительно закодированы все конечные последовательности цифр. Используя ASCII, можно закодировать любой текст числами — и он теоретически встречается в π. Но «нормальность» π — лишь гипотеза. Вычислено более 100 триллионов знаков, и статистически число выглядит нормальным — но строгого доказательства нет.",
+    rabbit_hole: "Сайт piday.org позволяет найти свою дату рождения в числе π. Книга «Красота числа π» Яноша Пача.",
+    category: "Математика", difficulty: "Сложный"
+  },
+  {
+    question: "Это животное технически бессмертно — оно может обратить старение вспять и вернуться к молодости. Что это?",
+    hint1: "Это морское существо, открытое в 1883 году у берегов Генуи. Очень маленькое — размером с ноготь.",
+    hint2: "Когда это существо стареет или получает травму, оно превращается обратно в «полип» — начальную стадию своей жизни.",
+    answer: "Медуза Turritopsis dohrnii",
+    context: "При стрессе или старении эта медуза запускает процесс «трансдифференцировки» — её клетки буквально перепрограммируются и она возвращается к стадии полипа, начиная жизнь заново. Теоретически этот цикл может продолжаться бесконечно. Учёные изучают этот механизм в надежде понять биологию старения человека — но поймать и содержать эту медузу крайне сложно.",
+    rabbit_hole: "Статья Нью-Йорк Таймс «Тайна бессмертной медузы» Натали Энджер или работы биолога Шин Куботы.",
+    category: "Наука", difficulty: "Средний"
+  },
+  {
+    question: "В этой стране есть озеро, вода которого настолько насыщена щёлочью, что превращает любое животное, упавшее в него, в каменную статую. Где находится это озеро?",
+    hint1: "Африка, Великая рифтовая долина. Озеро питается вулканическими источниками с высоким содержанием соды.",
+    hint2: "Танзания. Озеро Натрон. Фотограф Ник Брандт сфотографировал обызвествлённых птиц на берегу.",
+    answer: "Озеро Натрон в Танзании",
+    context: "pH воды озера Натрон достигает 10,5 — почти как у нашатырного спирта. Температура воды — до 60°C. Птицы, дезориентированные зеркальной поверхностью, врезаются в воду и погибают, после чего карбонат натрия буквально мумифицирует их тела. При этом само озеро — важнейшее место гнездования малых фламинго: около 75% мировой популяции размножается именно здесь.",
+    rabbit_hole: "Фотокнига Ника Брандта «Across the Ravaged Land» и документальный фильм Дэвида Аттенборо о Великой рифтовой долине.",
+    category: "Земля", difficulty: "Средний"
+  },
+  {
+    question: "Эта картина была написана художником, который к тому времени был полностью глух и не мог слышать ничего из того мира, что изображал. Что это за произведение?",
+    hint1: "Начало XIX века. Испания. Художник оглох в возрасте 46 лет после тяжёлой болезни.",
+    hint2: "«Сатурн, пожирающий своего сына» — одна из знаменитых «чёрных картин», которыми он украсил стены своего дома.",
+    answer: "«Чёрные картины» Франсиско Гойи",
+    context: "После потери слуха Гойя стал рисовать всё мрачнее — его поздние работы поражают психологической глубиной. Четырнадцать «чёрных картин» он писал прямо на стенах своего дома «Кинта дель Сордо» (Дом Глухого) между 1819 и 1823 годами — не для продажи, для себя. Эти работы не были известны при его жизни и случайно обнаружены после смерти. Сегодня они висят в музее Прадо.",
+    rabbit_hole: "Музей Прадо в Мадриде — «Сатурн, пожирающий своего сына» можно рассмотреть в высоком разрешении на сайте museodelprado.es.",
+    category: "Искусство", difficulty: "Средний"
+  },
+  {
+    question: "Этот архитектор спроектировал здание, строительство которого началось в 1882 году и до сих пор не завершено. Ожидаемая дата завершения — 2026 год. Что это за здание?",
+    hint1: "Испания, Барселона. Здание строится уже 140 лет и является самым известным незаконченным собором в мире.",
+    hint2: "Архитектор — Антони Гауди, погибший в 1926 году под трамваем, так и не увидев своего шедевра завершённым.",
+    answer: "Саграда Фамилия",
+    context: "Гауди посвятил Саграде Фамилии последние 43 года жизни и был так поглощён работой, что жил прямо на стройке. После его смерти строительство продолжилось по чертежам и моделям. В 2010 году Папа Римский освятил её как базилику — несмотря на незавершённость. Финансируется исключительно на пожертвования. В 2026 году — к 100-летию смерти Гауди — планируется установить последний шпиль.",
+    rabbit_hole: "Книга Жорди Фаули «Гауди: архитектура и природа» или виртуальный тур по Саграде Фамилии на sagradafamilia.org.",
+    category: "Искусство", difficulty: "Лёгкий"
+  },
+  {
+    question: "Если бы вы могли сжать всё пустое пространство внутри атомов из всех людей на Земле, человечество уместилось бы в объём... чего?",
+    hint1: "Атом почти целиком состоит из пустоты — ядро занимает ничтожную долю его объёма.",
+    hint2: "Если сжать атом до размера стадиона, его ядро будет размером с горошину в центре поля.",
+    answer: "В объём сахарного кубика",
+    context: "Ядро атома занимает примерно одну стомиллионную его объёма. Всё остальное — пустота с носящимися электронами. Если удалить всю эту пустоту из атомов 8 миллиардов людей, плотность вещества станет как у нейтронной звезды — несколько сотен миллионов тонн на кубический сантиметр. Именно так выглядят нейтронные звёзды: «сжатое» вещество умерших звёзд.",
+    rabbit_hole: "Книга Билла Брайсона «Краткая история почти всего на свете» — лучший научпоп о физике атома и вселенной.",
+    category: "Наука", difficulty: "Средний"
+  },
+  {
+    question: "Эта женщина написала первую в истории компьютерную программу — за 100 лет до появления первого компьютера. Кто она?",
+    hint1: "Середина XIX века, Англия. Она была дочерью знаменитого поэта-романтика.",
+    hint2: "Её отец — лорд Байрон. Она сотрудничала с Чарльзом Бэббиджем и его «Аналитической машиной».",
+    answer: "Ада Лавлейс",
+    context: "Ада Лавлейс в 1843 году перевела статью об Аналитической машине Бэббиджа и добавила собственные примечания — втрое длиннее оригинала. В них она описала алгоритм вычисления чисел Бернулли, который считается первой программой. Она также предвидела, что машины смогут не только считать, но и сочинять музыку. Язык программирования Ada назван в её честь.",
+    rabbit_hole: "Графический роман Сидни Падуа «Грандиозная машина Лавлейс и Бэббиджа» — история в комиксах с настоящими историческими примечаниями.",
+    category: "История", difficulty: "Лёгкий"
+  },
+  {
+    question: "Этот советский офицер в одиночку предотвратил ядерную войну — вопреки приказу и всем показаниям приборов. Что он сделал?",
+    hint1: "1983 год, разгар холодной войны. Советская система раннего предупреждения сообщает о ракетном ударе США.",
+    hint2: "Офицер дежурил на подмосковном командном пункте и должен был немедленно доложить о начале войны наверх.",
+    answer: "Станислав Петров решил, что тревога ложная, и не стал докладывать командованию",
+    context: "26 сентября 1983 года советский спутник зафиксировал пуск пяти американских ракет. По инструкции Петров должен был доложить наверх — это запустило бы ответный удар. Но он решил, что это сбой системы: настоящий удар включал бы сотни ракет. Он оказался прав — это было ложное срабатывание из-за отражения солнца от облаков. СССР засекретил этот инцидент, и мир узнал о нём лишь в 1990-х.",
+    rabbit_hole: "Документальный фильм «Человек, который спас мир» (2014) с Кевином Костнером в роли Петрова.",
+    category: "История", difficulty: "Средний"
+  },
+  {
+    question: "Расстояние от Земли до Луны кажется огромным — но знаете ли вы, что в этот промежуток поместятся все восемь планет Солнечной системы, выстроенные в ряд?",
+    hint1: "Среднее расстояние от Земли до Луны — около 384 400 километров.",
+    hint2: "Сложите диаметры Меркурия, Венеры, Марса, Юпитера, Сатурна, Урана и Нептуна — и сравните с расстоянием до Луны.",
+    answer: "Да — суммарный диаметр всех планет равен ~380 000 км",
+    context: "Это один из самых поразительных фактов о масштабах Солнечной системы. Сумма диаметров всех восьми планет составляет примерно 380 024 км — почти точно равна расстоянию до Луны. Это совпадение наглядно показывает, насколько огромно расстояние до нашего естественного спутника и насколько разреженно пространство Солнечной системы.",
+    rabbit_hole: "Канал YouTube «Kurzgesagt — In a Nutshell» на русском: видео о масштабах Солнечной системы и Вселенной.",
+    category: "Вселенная", difficulty: "Средний"
+  },
+  {
+    question: "Эту картину Леонардо да Винчи написал левой рукой — будучи правшой. Не потому что правая была занята, а по очень практичной причине. Какой?",
+    hint1: "Речь о его записных книжках и рисунках, которые он вёл особым способом.",
+    hint2: "Леонардо писал справа налево — зеркальным письмом. Если поднести страницу к зеркалу, текст читается нормально.",
+    answer: "Чтобы чернила не размазывались под рукой при письме слева направо",
+    context: "Леонардо был левшой, и при письме слева направо рука размазывала свежие чернила. Зеркальное письмо справа налево решало эту проблему. Кроме того, некоторые историки считают, что это был способ защитить записи от беглого взгляда чужих глаз. За 67 лет жизни Леонардо заполнил около 13 000 страниц заметок по физике, анатомии, механике и искусству.",
+    rabbit_hole: "Биография Уолтера Айзексона «Леонардо да Винчи» — исчерпывающее исследование записных книжек гения.",
+    category: "Искусство", difficulty: "Лёгкий"
+  },
+  {
+    question: "На дне Тихого океана лежит «точка Немо» — место, дальше всего удалённое от суши. Как далеко оно от ближайшего человека на поверхности Земли?",
+    hint1: "Координаты: 48°52′36″ ю.ш. 123°23′36″ з.д. — примерно в центре южной части Тихого океана.",
+    hint2: "Ближайшие к этой точке люди часто находятся не на земле, а в космосе — на Международной космической станции.",
+    answer: "МКС ближе — примерно 400 км против 2 688 км до суши",
+    context: "«Точка Немо» названа в честь капитана Немо Жюля Верна. Ближайшая суша — острова Дюси, Моту-Нуи и Махер — в 2 688 км. Орбита МКС проходит на высоте около 400 км — когда станция пролетает над этой точкой, астронавты оказываются ближе к ней, чем любой человек на Земле. Это место также используется как «космическое кладбище» — здесь намеренно топят отработавшие спутники.",
+    rabbit_hole: "Книга Эрика Ларсона «Мёртвый штиль» о мореплавании в самых изолированных точках Тихого океана.",
+    category: "Земля", difficulty: "Сложный"
+  },
+  {
+    question: "Этот математик в XIX веке открыл геометрию, в которой параллельных прямых не существует вовсе — и был объявлен сумасшедшим. Спустя полвека его геометрия оказалась описанием реального пространства Вселенной. Кто это?",
+    hint1: "1820-е годы. Несколько математиков независимо пришли к одному выводу: пятый постулат Евклида можно нарушить.",
+    hint2: "Российский математик, профессор Казанского университета, первым опубликовавший неевклидову геометрию.",
+    answer: "Николай Лобачевский",
+    context: "Лобачевский в 1830 году опубликовал геометрию, где через точку вне прямой проходит бесконечно много параллельных. Коллеги смеялись — работу отвергли. Признание пришло посмертно. Эйнштейн использовал неевклидову геометрию Римана (развитие идей Лобачевского) для создания общей теории относительности — описания реального искривлённого пространства-времени.",
+    rabbit_hole: "Книга Дэна Кэллахана «Евклид и его современные соперники» или лекции по неевклидовой геометрии на Khan Academy.",
+    category: "Математика", difficulty: "Сложный"
+  },
+  {
+    question: "Этот город был построен так быстро, что рабочие буквально замерзали насмерть на стройке — тысячи людей погибли. Тем не менее Пётр I называл его «окном в Европу». Что это за город?",
+    hint1: "Начало XVIII века. Россия стремится к выходу к морю и строит новую столицу на болотах.",
+    hint2: "Строительство началось в 1703 году на Заячьем острове в устье Невы.",
+    answer: "Санкт-Петербург",
+    context: "По некоторым оценкам, при строительстве Петербурга погибло от 30 000 до 100 000 рабочих — от болезней, голода и холода. Пётр принудительно переселял мастеров со всей страны. Город строился на сваях, вбитых в болота. Несмотря на это — или благодаря этому — он стал одним из красивейших городов Европы и был столицей России до 1918 года.",
+    rabbit_hole: "Книга Соломона Волкова «История культуры Санкт-Петербурга» или цикл лекций Льва Лурье о городе.",
+    category: "История", difficulty: "Лёгкий"
+  },
+  {
+    question: "Осьминог имеет девять мозгов — один центральный и по одному в каждом щупальце. Что происходит, если щупальце отрезать?",
+    hint1: "Центральный мозг осьминога контролирует общее поведение, но не может управлять каждым движением щупалец напрямую.",
+    hint2: "У каждого щупальца есть собственная нервная система — около двух третей всех нейронов осьминога находится именно в них.",
+    answer: "Щупальце продолжает двигаться и реагировать на раздражители до часа",
+    context: "Отрезанное щупальце осьминога сохраняет способность реагировать на прикосновение и даже пытается «схватить» предметы ещё до 60 минут. Это доказывает, что каждое щупальце действительно «думает» самостоятельно. Исследования показали, что центральный мозг посылает лишь общие команды («двигайся туда»), а детали движения щупальце прорабатывает само — что делает осьминога одним из самых загадочных существ на Земле.",
+    rabbit_hole: "Книга Питера Годфри-Смита «Другие умы: осьминог, море и глубинные истоки сознания».",
+    category: "Наука", difficulty: "Средний"
+  }
+];
+
+const CAT_PROMPTS = {
+  random: "любой удивительной теме — история, математика, наука, планета Земля, вселенная, искусство — выбери что-то по-настоящему поразительное",
+  history: "истории человечества — неожиданный поворот событий, малоизвестный факт или переломный момент",
+  math: "математике — красивая теорема, удивительный парадокс, загадочное свойство чисел или геометрии",
+  earth: "планете Земля — геология, океаны, климат, биосфера, удивительные природные явления",
+  science: "физике, химии или биологии — нечто контринтуитивное, элегантное или меняющее представление о мире",
+  universe: "астрономии, космосе, звёздах, галактиках или квантовой физике",
+  art: "искусстве, архитектуре, музыке или литературе — скрытая история великого произведения или неожиданная деталь"
+};
+
+const CAT_LABELS = {
+  random: "Любопытное", history: "История", math: "Математика",
+  earth: "Земля", science: "Наука", universe: "Вселенная", art: "Искусство"
+};
+
+// ── Состояние ──
+let currentCat = 'random';
+let currentData = null;
+let stats = { questions: 0, hints: 0, answers: 0 };
+
+// ── localStorage: память между сессиями ──
+const LS_SEEN   = 'curiosity_seen_v1';    // id уже показанных вопросов
+const LS_AIBANK = 'curiosity_ai_bank_v1'; // накопленные AI-вопросы
+const LS_DATE   = 'curiosity_date_v1';    // дата последнего визита
+
+function loadSeen() {
+  try { return new Set(JSON.parse(localStorage.getItem(LS_SEEN) || '[]')); }
+  catch { return new Set(); }
+}
+function saveSeen(set) {
+  try { localStorage.setItem(LS_SEEN, JSON.stringify([...set])); } catch {}
+}
+function loadAIBank() {
+  try { return JSON.parse(localStorage.getItem(LS_AIBANK) || '[]'); }
+  catch { return []; }
+}
+function saveAIBank(arr) {
+  try { localStorage.setItem(LS_AIBANK, JSON.stringify(arr.slice(-120))); } catch {}
+  // храним не больше 120 AI-вопросов чтобы не раздувать storage
+}
+
+// seenIds — глобальный Set, пополняется при каждом показе вопроса
+let seenIds = loadSeen();
+
+// Если новый день — сбрасываем только показанные ЛОКАЛЬНЫЕ вопросы
+// (AI-накопленные остаются, чтобы не генерировать лишний раз)
+const todayStr = new Date().toISOString().slice(0, 10);
+const lastDate = localStorage.getItem(LS_DATE) || '';
+if (lastDate !== todayStr) {
+  // Оставляем в seen только AI-вопросы (их id начинаются с 'ai_')
+  seenIds = new Set([...seenIds].filter(id => String(id).startsWith('ai_')));
+  saveSeen(seenIds);
+  localStorage.setItem(LS_DATE, todayStr);
+}
+
+// ── Рабочие пулы (только в памяти, пересчитываются при инициализации) ──
+const pools = {};
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// Собираем пул: берём вопросы, которые ещё не показывались
+function buildPools() {
+  Object.keys(pools).forEach(k => pools[k] = []);
+
+  // Сначала локальная база
+  LOCAL_BANK.forEach((q, i) => {
+    q._id = 'local_' + i;
+    if (seenIds.has(q._id)) return; // уже видела — пропускаем
+    const cat = Object.keys(CAT_LABELS).find(k => CAT_LABELS[k] === q.category) || 'random';
+    if (!pools[cat]) pools[cat] = [];
+    pools[cat].push(q);
+    if (!pools['random']) pools['random'] = [];
+    pools['random'].push(q);
+  });
+
+  // Затем накопленные AI-вопросы из localStorage
+  loadAIBank().forEach(q => {
+    if (seenIds.has(q._id)) return;
+    const cat = Object.keys(CAT_LABELS).find(k => CAT_LABELS[k] === q.category) || 'random';
+    if (!pools[cat]) pools[cat] = [];
+    pools[cat].push(q);
+    if (!pools['random']) pools['random'] = [];
+    pools['random'].push(q);
+  });
+
+  // Перемешиваем каждый пул
+  Object.keys(pools).forEach(cat => shuffle(pools[cat]));
+}
+
+// Если все вопросы категории исчерпаны — сбрасываем seen для неё и пересчитываем
+function resetCategoryIfEmpty(cat) {
+  if ((pools[cat] || []).length > 0) return;
+  // Удаляем из seen только вопросы этой категории
+  const catLabel = CAT_LABELS[cat];
+  const toRemove = [...seenIds].filter(id => {
+    if (String(id).startsWith('local_')) {
+      const idx = parseInt(id.replace('local_', ''));
+      return LOCAL_BANK[idx] && LOCAL_BANK[idx].category === catLabel;
+    }
+    return false;
+  });
+  toRemove.forEach(id => seenIds.delete(id));
+  saveSeen(seenIds);
+  buildPools();
+}
+
+// ── Инициализация ──
+document.getElementById('dateBadge').textContent = new Date().toLocaleDateString('ru-RU', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+});
+
+buildPools();
+
+// Показываем первый вопрос МГНОВЕННО из локальной базы
+loadQuestion();
+
+// Фоновая подгрузка AI-вопросов — через 3 сек чтобы не мешать старту
+setTimeout(() => fetchAIBatch('random'), 3000);
+
+// ── Выбор категории ──
+function selectCat(btn) {
+  document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat = btn.dataset.cat;
+  resetCategoryIfEmpty(currentCat);
+  loadQuestion();
+  const aiCount = (pools[currentCat] || []).filter(q => q._ai).length;
+  if (aiCount < 2) setTimeout(() => fetchAIBatch(currentCat), 500);
+}
+
+// ── Показать вопрос из пула (мгновенно) ──
+function loadQuestion() {
+  resetCategoryIfEmpty(currentCat);
+  const pool = pools[currentCat] || pools['random'] || [];
+  if (pool.length === 0) {
+    // Совсем ничего нет — генерируем AI-вопрос и ждём
+    fetchAIBatch(currentCat);
+    return;
+  }
+  const q = pool.shift();
+  currentData = q;
+
+  // Помечаем как показанный
+  seenIds.add(q._id);
+  saveSeen(seenIds);
+
+  renderQuestion(q);
+
+  // Если пул мелеет — тихо досыпаем AI
+  if ((pools[currentCat] || []).length < 2) {
+    fetchAIBatch(currentCat);
+  }
+}
+
+// ── Рендер вопроса ──
+function renderQuestion(d) {
+  resetCardUI();
+  document.getElementById('questionText').className = 'question-text';
+  document.getElementById('questionText').textContent = d.question;
+  document.getElementById('qCategory').textContent = d.category || CAT_LABELS[currentCat];
+  document.getElementById('qDiff').textContent = d.difficulty || '';
+  document.getElementById('hint1Text').textContent = d.hint1;
+  document.getElementById('hint2Text').textContent = d.hint2;
+  document.getElementById('answerText').className = 'answer-text';
+  document.getElementById('answerText').textContent = d.answer;
+  document.getElementById('contextText').className = 'context-text';
+  document.getElementById('contextText').textContent = d.context;
+  document.getElementById('rabbitText').textContent = d.rabbit_hole || '';
+  document.getElementById('revealBtn').disabled = false;
+  document.getElementById('hint1Btn').disabled = false;
+  stats.questions++;
+  updateStats();
+  document.getElementById('sessionInfo').textContent = `Вопрос №${stats.questions} сегодня`;
+}
+
+// ── Фоновая загрузка AI-вопросов ──
+let aiFetching = false;
+async function fetchAIBatch(cat) {
+  if (aiFetching) return;
+  aiFetching = true;
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 2500,
+        messages: [{ role: "user", content: `Ты — создатель образовательного сайта для русскоязычной аудитории.
+Придумай 3 разных захватывающих вопроса на тему: ${CAT_PROMPTS[cat]}.
+Стиль "Что? Где? Когда?" — интригующие, красиво сформулированные, не банальные.
+Ответь ТОЛЬКО валидным JSON-массивом из 3 объектов (без markdown):
+[{"question":"...","hint1":"подсказка о времени/эпохе","hint2":"подсказка о людях/месте","answer":"...","context":"2-3 предложения","rabbit_hole":"куда идти дальше","category":"на русском","difficulty":"Лёгкий/Средний/Сложный"}]` }]
+      })
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const raw = data.content.map(c => c.text || '').join('');
+    const arr = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    arr.forEach((q, i) => {
+      q._ai = true;
+      q._id = 'ai_' + Date.now() + '_' + i;
+      // Сохраняем в localStorage чтобы не терять между сессиями
+      const aiBank = loadAIBank();
+      aiBank.push(q);
+      saveAIBank(aiBank);
+      // Если вопрос ещё не показывался — добавляем в активный пул
+      if (!seenIds.has(q._id)) {
+        if (!pools[cat]) pools[cat] = [];
+        pools[cat].push(q);
+        if (cat !== 'random') {
+          if (!pools['random']) pools['random'] = [];
+          pools['random'].push(q);
+        }
+      }
+    });
+  } catch(e) {
+    // тихо игнорируем — локальная база продолжает работать
+  } finally {
+    aiFetching = false;
+  }
+}
+
+// ── Подсказки ──
+function revealHint(n) {
+  if (n === 1) {
+    document.getElementById('hint1Card').classList.add('visible');
+    document.getElementById('hint1Btn').disabled = true;
+    document.getElementById('hint2Btn').disabled = false;
+    stats.hints++;
+  } else {
+    document.getElementById('hint2Card').classList.add('visible');
+    document.getElementById('hint2Btn').disabled = true;
+    stats.hints++;
+  }
+  updateStats();
+}
+
+// ── Ответ ──
+function revealAnswer() {
+  if (!currentData) return;
+  document.getElementById('answerSection').classList.add('open');
+  document.getElementById('revealBtn').querySelector('span').textContent = '✓ Ответ раскрыт';
+  document.getElementById('revealBtn').disabled = true;
+  if (currentData.rabbit_hole) {
+    setTimeout(() => document.getElementById('rabbitZone').classList.add('visible'), 400);
+  }
+  stats.answers++;
+  updateStats();
+  setTimeout(() => {
+    document.getElementById('answerSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 150);
+}
+
+// ── Индикатор пула ──
+function updateQueueIndicator() {
+  const n = (pools[currentCat] || []).length;
+  ['queueIndicator', 'queueIndicatorTop'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (n > 0) {
+      el.textContent = `✦ ещё ${n} готово`;
+      el.style.color = 'var(--teal)';
+    } else {
+      el.textContent = aiFetching ? '· загружаем ещё…' : '';
+      el.style.color = 'var(--ink-3)';
+    }
+  });
+}
+
+// ── Сброс UI ──
+function resetCardUI() {
+  document.getElementById('answerSection').classList.remove('open');
+  document.getElementById('hint1Card').classList.remove('visible');
+  document.getElementById('hint2Card').classList.remove('visible');
+  document.getElementById('rabbitZone').classList.remove('visible');
+  document.getElementById('errorCard').classList.remove('visible');
+  document.getElementById('loadingOverlay').classList.remove('active');
+  document.getElementById('revealBtn').disabled = true;
+  document.getElementById('hint1Btn').disabled = true;
+  document.getElementById('hint2Btn').disabled = true;
+  document.getElementById('revealBtn').querySelector('span').textContent = 'Раскрыть ответ';
+  document.getElementById('answerText').className = 'answer-text is-loading';
+  document.getElementById('contextText').className = 'context-text is-loading';
+}
+
+// ── Статистика ──
+function updateStats() {
+  document.getElementById('statQuestions').textContent = stats.questions;
+  document.getElementById('statHints').textContent = stats.hints;
+  document.getElementById('statAnswers').textContent = stats.answers;
+}
+</script>
+</body>
+</html>
